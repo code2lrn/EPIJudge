@@ -8,11 +8,38 @@ from test_framework.test_utils import enable_executor_hook
 Subarray = collections.namedtuple('Subarray', ('start', 'end'))
 
 
+def smaller(s1: Subarray, s2: Subarray) -> Subarray:
+    if s1.start == s1.end == -1:
+        return s2
+
+    if s2.start == s2.end == -1:
+        return s1
+
+    return s1 if (s1.end - s1.start) < (s2.end - s2.start) else s2
+
+
 def find_smallest_sequentially_covering_subset(paragraph: List[str],
                                                keywords: List[str]
                                                ) -> Subarray:
-    # TODO - you fill in here.
-    return Subarray(0, 0)
+    keywords_index_by_keyword = {k: i for i, k in enumerate(keywords)}
+    keyword_occurrence = [-1] * len(keywords)
+    subarray_lengths = [-1] * len(keywords)
+    shortest_subarray = Subarray(-1, -1)
+    for i, word in enumerate(paragraph):
+        if word in keywords_index_by_keyword:
+            keyword_idx = keywords_index_by_keyword[word]
+            if keyword_idx == 0:
+                subarray_lengths[keyword_idx] = 1
+            elif subarray_lengths[keyword_idx - 1] != -1:
+                distance_from_prev_keyword = i - keyword_occurrence[keyword_idx - 1]
+                subarray_lengths[keyword_idx] = distance_from_prev_keyword + subarray_lengths[keyword_idx - 1]
+
+            keyword_occurrence[keyword_idx] = i
+
+            if keyword_idx == len(keywords) - 1 and subarray_lengths[-1] != -1:
+                shortest_subarray = smaller(Subarray(i - subarray_lengths[-1] + 1, i), shortest_subarray)
+
+    return shortest_subarray
 
 
 @enable_executor_hook

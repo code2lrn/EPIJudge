@@ -2,9 +2,11 @@ from list_node import ListNode
 from test_framework import generic_test
 
 
-def search_list(L: ListNode, key: int) -> ListNode:
-    # TODO - you fill in here.
-    return ListNode()
+def search_list(node: ListNode, key: int) -> ListNode:
+    while node and node.data != key:
+        node = node.next
+
+    return node
 
 
 def search_list_wrapper(L, key):

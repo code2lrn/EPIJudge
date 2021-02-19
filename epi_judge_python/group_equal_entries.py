@@ -10,7 +10,25 @@ Person = collections.namedtuple('Person', ('age', 'name'))
 
 
 def group_by_age(people: List[Person]) -> None:
-    # TODO - you fill in here.
+    #people.sort(key=lambda x: x.age)
+    count_by_age = collections.Counter((person.age for person in people))
+    offset_by_age, offset = {}, 0
+    for age, cnt in count_by_age.items():
+        offset_by_age[age] = offset
+        offset += cnt
+
+    while offset_by_age:
+        from_age = next(iter(offset_by_age))
+        from_idx = offset_by_age[from_age]
+        to_age = people[from_idx].age
+        to_idx = offset_by_age[to_age]
+        people[from_idx], people[to_idx] = people[to_idx], people[from_idx]
+        count_by_age[to_age] -= 1
+        if count_by_age[to_age]:
+            offset_by_age[to_age] += 1
+        else:
+            del offset_by_age[to_age]
+
     return
 
 

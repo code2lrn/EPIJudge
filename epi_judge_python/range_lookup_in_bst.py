@@ -8,8 +8,21 @@ Interval = collections.namedtuple('Interval', ('left', 'right'))
 
 
 def range_lookup_in_bst(tree: BstNode, interval: Interval) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    def range_lookup(node: BstNode):
+        if not node:
+            return None
+        if interval.left <= node.data <= interval.right:
+            range_lookup(node.left)
+            result.append(node.data)
+            range_lookup(node.right)
+        elif interval.left > node.data:
+            range_lookup(node.right)
+        else:
+            range_lookup(node.left)
+
+    result = []
+    range_lookup(tree)
+    return result
 
 
 def range_lookup_in_bst_wrapper(tree, i):

@@ -9,8 +9,17 @@ NUM_PEGS = 3
 
 
 def compute_tower_hanoi(num_rings: int) -> List[List[int]]:
-    # TODO - you fill in here.
-    return []
+    def move(rings: int, source: int, target: int, interim: int):
+        if rings > 0:
+            move(rings - 1, source, interim, target)
+            pegs[target].append(pegs[source].pop())
+            moves.append([source, target])
+            move(rings - 1, interim, target, source)
+
+    moves: List[List[int]] = []
+    pegs = [list(reversed(range(1, num_rings + 1)))] + [[] for _ in range(1, NUM_PEGS)]
+    move(num_rings, 0, 1, 2)
+    return moves
 
 
 @enable_executor_hook

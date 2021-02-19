@@ -9,8 +9,27 @@ from test_framework.test_utils import enable_executor_hook
 def pair_includes_ancestor_and_descendant_of_m(possible_anc_or_desc_0: BstNode,
                                                possible_anc_or_desc_1: BstNode,
                                                middle: BstNode) -> bool:
-    # TODO - you fill in here.
-    return True
+    p0, p1 = possible_anc_or_desc_0, possible_anc_or_desc_1
+    while (p0 or p1)\
+            and p0 is not possible_anc_or_desc_1\
+            and p1 is not possible_anc_or_desc_0\
+            and p0 is not middle\
+            and p1 is not middle:
+        if p0:
+            p0 = p0.left if p0.data > middle.data else p0.right
+        if p1:
+            p1 = p1.left if p1.data > middle.data else p1.right
+
+    if (p0 is not middle and p1 is not middle) or p0 is possible_anc_or_desc_1 or p1 is possible_anc_or_desc_0:
+        return False
+
+    def target_reachable(source: BstNode, target: BstNode) -> bool:
+        while source and source is not target:
+            source = source.left if source.data > target.data else source.right
+
+        return source is target
+
+    return target_reachable(middle, possible_anc_or_desc_0 if p1 is middle else possible_anc_or_desc_1)
 
 
 @enable_executor_hook

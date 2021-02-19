@@ -4,8 +4,12 @@ from test_framework import generic_test
 
 
 def can_reach_end(A: List[int]) -> bool:
-    # TODO - you fill in here.
-    return True
+    watermark, last = 0, len(A) - 1
+    i = 0
+    while i <= watermark < last:
+        watermark = max(watermark, A[i] + i)
+        i += 1
+    return watermark >= last
 
 
 if __name__ == '__main__':

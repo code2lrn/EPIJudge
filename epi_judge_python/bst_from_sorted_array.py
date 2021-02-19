@@ -10,8 +10,13 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def build_min_height_bst_from_sorted_array(A: List[int]) -> Optional[BstNode]:
-    # TODO - you fill in here.
-    return None
+    def build_bst(start: int, end: int):
+        if start >= end:
+            return None
+        mid = start + (end - start) // 2
+        return BstNode(A[mid], build_bst(start, mid), build_bst(mid + 1, end))
+
+    return build_bst(0, len(A))
 
 
 @enable_executor_hook

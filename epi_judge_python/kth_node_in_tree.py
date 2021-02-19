@@ -16,7 +16,15 @@ class BinaryTreeNode:
 
 def find_kth_node_binary_tree(tree: BinaryTreeNode,
                               k: int) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
+    while tree:
+        total_left_nodes = tree.left.size if tree.left else 0
+        if k > total_left_nodes + 1:
+            k -= total_left_nodes + 1
+            tree = tree.right
+        elif k - 1 == total_left_nodes:
+            return tree
+        else:
+            tree = tree.left
     return None
 
 

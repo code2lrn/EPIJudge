@@ -5,8 +5,37 @@ from test_framework import generic_test
 
 
 def cyclically_right_shift_list(L: ListNode, k: int) -> Optional[ListNode]:
-    # TODO - you fill in here.
-    return None
+    def length(start: ListNode) -> int:
+        node_count = 0
+        while start:
+            node_count += 1
+            start = start.next
+
+        return node_count
+
+    if not L:
+        return L
+
+    list_length = length(L)
+    k = k % list_length
+    if k == 0:
+        return L
+
+    kth = L
+    for _ in range(0, k):
+        kth = kth.next
+
+    another_kth = L
+    last = None
+    while kth:
+        another_kth, kth, last = another_kth.next, kth.next, kth
+
+    last.next = L
+    while last.next is not another_kth:
+        last = last.next
+    last.next = None
+
+    return another_kth
 
 
 if __name__ == '__main__':

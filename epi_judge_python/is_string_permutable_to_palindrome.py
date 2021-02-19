@@ -1,9 +1,10 @@
 from test_framework import generic_test
+from collections import Counter
+from itertools import filterfalse
 
 
 def can_form_palindrome(s: str) -> bool:
-    # TODO - you fill in here.
-    return True
+    return len(list(filterfalse(lambda x: x % 2 == 0, Counter(s).values()))) <= 1
 
 
 if __name__ == '__main__':

@@ -4,8 +4,19 @@ from test_framework import generic_test, test_utils
 
 
 def generate_balanced_parentheses(num_pairs: int) -> List[str]:
-    # TODO - you fill in here.
-    return []
+    def generate(num_left, num_right, combination):
+        if num_left > 0:
+            generate(num_left - 1, num_right, combination + '(')
+
+        if num_left < num_right:
+            generate(num_left, num_right - 1, combination + ')')
+
+        if num_right == 0:
+            combinations.append(combination)
+
+    combinations: List[str] = []
+    generate(num_pairs, num_pairs, '')
+    return combinations
 
 
 if __name__ == '__main__':
